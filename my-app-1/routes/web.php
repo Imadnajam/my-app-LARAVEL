@@ -14,7 +14,7 @@ use App\Http\Controllers\QB;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::post('/addligneF',[QB::class,'AddLigneFour'])->name('addligneF');
