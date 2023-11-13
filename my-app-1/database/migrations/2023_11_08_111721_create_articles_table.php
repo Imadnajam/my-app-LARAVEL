@@ -15,11 +15,15 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_Fournissours');
+
             $table->text('description');
             $table->integer('poids');
-            $table->decimal('prix_achat',6,4);
-            $table->foreign('id_Fournissours')->references('id')->on('fournisseur');
+            $table->string('couleur',30);
+            $table->decimal('prix_achat', 10, 4);
+
+            $table->foreignId('id_Fournissours')
+            ->constrained('fournisseur')
+            ->onDelete('restrict');
             $table->timestamps();
         });
     }
