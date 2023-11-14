@@ -33,6 +33,7 @@ if (file_exists($maintenance = __DIR__.'/my-app-1/storage/framework/maintenance.
 
 require __DIR__.'/my-app-1/vendor/autoload.php';
 
+
 /*
 |--------------------------------------------------------------------------
 | Run The Application
