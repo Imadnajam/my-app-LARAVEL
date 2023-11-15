@@ -1,0 +1,94 @@
+version: "3.9"
+volumes:
+    laravel-railway-mysql-data:
+        driver: local
+
+services:
+    nginx-container:
+        image: nginx
+        container_name: "laravel-stations-nginx"
+        ports:
+            - "${DOCKER_PORT:-8888}:80"
+        volumes:
+            - ./:/var/www/:cached
+            - ./server/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - php-container
+
+    composer_installation:
+        container_name: laravel-stations-composer-installation
+        image: composer
+        volumes:
+          - ./:/app
+        entrypoint:
+            - sh
+        command:
+            # .exec-onceというファイルがあったら実行しない
+            # 最初にコマンド実行がなされていたら、.exec-onceというファイルが作成されるようにしている
+            # .exec-onceがあるが、すでにcomposer installなどが実行されているケースもあるため、
+            # 注意すること。もし.exec-onceがあるのに、次のものが存在する場合は、何かしら個人で触った影響。
+            # 1. .env ファイルがある
+            # 2. vendorディレクトリがある(composer installが実行済みであるということ)
+            # 3. php artisan key:generateされている(.envファイルのAPP_KEY=のあとの文字がある場合はkey:generateが実行済みということ)
+            - -c
+            - |
+              [ -f ./.exec-once ] || {
+                cp .env.example .env && composer install --ignore-platform-reqs && php artisan key:generate && touch ./.exec-once
+              }
+
+    yarn_installation:
+        container_name: laravel-stations-yarn-installation
+        image: node:17.9.0
+        volumes:
+          - ./:/app
+        entrypoint:
+            - sh
+        command:
+            # .exec-once-yarnというファイルが存在するというファイルがあったら実行しない
+            # 最初にコマンド実行がなされていたら、.exec-once-yarnというファイルが作成されるようにしている
+            # .exec-once-yarnがあるが、すでにyarn installなどが実行されているケースもあるため、
+            # 注意すること。もし.exec-once-yarnがあるのに、次のものが存在する場合は、何かしら個人で触った影響。
+            # 1. node_modulesディレクトリがある
+            - -c
+            - |
+              [ -f ./.exec-once-yarn ] || {
+                yarn install && touch ./.exec-once-yarn
+              }
+
+    php-container:
+        build: ./server/docker/php
+        container_name: "laravel-stations-php"
+        volumes:
+            - ./:/var/www:cached
+        depends_on:
+            - composer_installation
+            - yarn_installation
+        env_file:
+            - .env
+
+    mysql-container:
+        container_name: "laravel-stations-mysql"
+        build:
+          context: ./server/docker/mysql
+          dockerfile: Dockerfile
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DOCKER_DB_ROOT_PASS:-dev}
+            MYSQL_USER: ${DOCKER_DB_USERNAME:-dev}
+            MYSQL_PASSWORD: ${DOCKER_DB_PASSWORD:-dev}
+            MYSQL_DATABASE: ${DOCKER_DB_DATABASE:-laravel_stations}
+            MYSQL_TCP_PORT: ${DOCKER_DB_PORT:-53306}
+        ports:
+            - "${DOCKER_DB_PORT:-53306}:${DOCKER_DB_PORT:-53306}"
+        volumes:
+            - ./server/docker/mysql/init:/docker-entrypoint-initdb.d
+            - laravel-railway-mysql-data:/var/lib/mysql:cached
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+          - 58080:8080
+        environment:
+            ADMINER_DEFAULT_SERVER: mysql-container
+            ADMINER_DESIGN: galkaev
+
