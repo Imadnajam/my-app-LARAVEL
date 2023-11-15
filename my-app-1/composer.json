@@ -60,6 +60,12 @@
             "pestphp/pest-plugin": true
         }
     },
+    "scripts": {
+        "postinstall": [
+            "composer install --no-dev"
+        ]
+    },
+
     "minimum-stability": "stable",
     "prefer-stable": true
 }

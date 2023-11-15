@@ -25,7 +25,12 @@ Route::post('/addligneA',[QB::class,'AddLigneArticle'])->name('addligne.Articles
 
 
 //   Q1 liste des fournisseurs
-Route::post('/listeF',[QB::class,'liste_fournisseurs'])->name('liste_fournisseurs');
+
+Route::post('/listeF', [QB::class, 'liste_fournisseurs'])->name('liste_fournisseurs');
+Route::get('/listeF', function () {
+    return view('listeF');
+});
+
 // Q2 La liste des fournisseurs d’Agadir.
 Route::post('/listeFAgadir',[QB::class,'fournisseurs_Agadir'])->name('fournisseurs_Agadir');
 // Q3 Les noms et les villes des fournisseurs.
@@ -44,3 +49,9 @@ Route::post('/listeCountA',[QB::class,'nombreA'])->name('nombreA');
 // 	La moyenne des prix d’achat.
 Route::post('/listeMoyenneA',[QB::class,'moyennePA'])->name('moyennePA');
 
+
+//   Complément TP Query Builder
+Route::post('/les_articles_de_F',[QB::class,'articleDF'])->name('les_articles_de_F');
+
+Route::delete('/articles/{article}', [QB::class,'destroy'])->name('articles.destroy');
+Route::get('/articles/{article}/edit',[QB::class,'edit'])->name('articles.edit');

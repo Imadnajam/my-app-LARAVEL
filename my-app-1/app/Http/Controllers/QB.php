@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\articles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,10 +26,11 @@ class QB extends Controller
             ]);
             return response("l'ajout est effectué avec succès ... ");
             }
-        public function liste_fournisseurs(){
-            $four=DB::table('fournisseur')->get();
-            return response($four);
-        }
+            public function liste_fournisseurs() {
+                $four = DB::table('fournisseur')->get();
+                return view('listeF', ['four' => $four]);
+            }
+
         public function fournisseurs_Agadir(){
             $four=DB::table('fournisseur')->where('ville','=','Agadir')->get();
             return response($four);
@@ -62,5 +63,19 @@ class QB extends Controller
             $art=DB::table('articles')->avg('prix_achat');
             return response($art);
         }
+        public function articleDF(Request $request) {
 
+            $idFournisseur = $request->input('fournisseur');
+
+
+            $four = DB::table('articles')->where('id_Fournissours', $idFournisseur)->get();
+
+            return view('listeA', ['four' => $four]);
+        }
+
+        public function destroy(articles $article)
+        {
+            $article->delete();
+            return response()->json(['success' => true, 'message' => 'Article deleted successfully.'], 200);
+        }
 }

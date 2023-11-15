@@ -51,34 +51,81 @@
         </form>
         <br><br>
        <form action="{{route('liste_fournisseurs')}}" method="POST">
-        <button type="submit" class="btn btn-secondary">liste des fournisseurs</button>
+        <button type="submit" class="btn btn-link">Complément TP Query Builder
+        </button>
     </form>
-    <br>
-    <form action="{{route('fournisseurs_Agadir')}}" method="POST">
-        <button type="submit" class="btn btn-success">La liste des fournisseurs d’Agadir</button>
-    </form>
-<br>
-<form action="{{route('fournisseurs_NF')}}" method="POST">
-    <button type="submit" class="btn btn-danger">Les noms et les villes des fournisseurs</button>
-</form><br>
-<form action="{{route('désignations_poids')}}" method="POST">
-    <button type="submit" class="btn btn-warning">Les désignations et les poids des articles.</button>
-</form><br>
-<form action="{{route('désignations_couleur')}}" method="POST">
-    <button type="submit" class="btn btn-info">Les numéros et les désignations des articles de couleur verte</button>
-</form><br>
-<form action="{{route('prix_supérieur')}}" method="POST">
-    <button type="submit" class="btn btn-link">prix achat supérieur à 500.</button>
-</form><br>
-<form action="{{route('poids_entre')}}" method="POST">
-    <button type="submit" class="btn btn-info">Les articles ayant un poids entre 200 et 300.</button>
-</form><br>
-<form action="{{route('nombreA')}}" method="POST">
-    <button type="submit" class="btn btn-info">Le nombre d articles.</button>
-</form><br>
-<form action="{{route('moyennePA')}}" method="POST">
-    <button type="submit" class="btn btn-info">La moyenne des prix d achat</button>
-</form><br>
+    <table class="table-bordered mx-auto"  >
+        <thead class="thead-dark">
+            <tr>
+                <th>Action</th>
+                <th>Bouton</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>Liste des fournisseurs d'Agadir</td>
+            <td>
+                <form action="{{ route('fournisseurs_Agadir') }}" method="POST">
+                    <button type="submit" class="btn btn-info">Q1</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>Noms et villes des fournisseurs</td>
+            <td>
+                <form action="{{ route('fournisseurs_NF') }}" method="POST">
+                    <button type="submit" class="btn btn-info">Q2</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>Désignations et poids des articles</td>
+            <td>
+                <form action="{{ route('désignations_poids') }}" method="POST">
+                    <button type="submit" class="btn btn-info">Q3</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>Numéros et désignations des articles de couleur verte</td>
+            <td>
+                <form action="{{ route('désignations_couleur') }}" method="POST">
+                    <button type="submit" class="btn btn-info">Q4</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>Prix d'achat supérieur à 500</td>
+            <td>
+                <form action="{{ route('prix_supérieur') }}" method="POST">
+                    <button type="submit" class="btn btn-info">Q5</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>Articles ayant un poids entre 200 et 300</td>
+            <td>
+                <form action="{{ route('poids_entre') }}" method="POST">
+                    <button type="submit" class="btn btn-info">Q6</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>Le nombre d'articles</td>
+            <td>
+                <form action="{{ route('nombreA') }}" method="POST">
+                    <button type="submit" class="btn btn-info">Q7</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>Moyenne des prix d'achat</td>
+            <td>
+                <form action="{{ route('moyennePA') }}" method="POST">
+                    <button type="submit" class="btn btn-info">Q8</button>
+                </form>
+            </td>
+        </tr>
+    </table>
 
 
     </div>
